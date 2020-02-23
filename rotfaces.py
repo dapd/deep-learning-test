@@ -2,21 +2,23 @@ import pandas as pd
 import numpy as np
 import os
 from PIL import Image
-from array import *
 import keras.backend as K
 from sklearn.model_selection import train_test_split
 import glob
 
 dirname = 'train'
 
+# Convert string labels to integers
 label_names = ['rotated_left','upright','rotated_right','upside_down']
 def conv_label2int(label):
     idx = label_names.index( label )
     return idx
 
+# Convert integers to string lables
 def conv_int2label(index):
     return label_names[index]
 
+# Read and return an image
 def get_image(dirname,file):
     image = np.empty([3,64,64],dtype='uint8')
     imfile = Image.open(os.path.join(dirname, file))
@@ -68,7 +70,7 @@ def load_data():
 
     return (x_train, y_train), (x_test, y_test)
 
-
+# Get list of files in a directory
 def get_filelist(dirname):
     imgfiles = []
     for filename in glob.glob(dirname+"/*"):
@@ -96,7 +98,7 @@ def load_test_data():
 
     return (x_pred, fn_pred)
 
-
+# Rotate images and return them with correct orientation
 def rotate_images(fn_pred,y_pred):
     dirname = 'test'
     if not os.path.isdir('preds'):
